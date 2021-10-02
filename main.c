@@ -1,23 +1,29 @@
 #include <stdio.h>
+#define clrscr() printf("\e[1;1H\e[2J")
 
-void getUserChoice(char* c);
-int choiceValid(char* c);
-void clearKeyboardBuffer(void);
+void get_user_choice(char* c);
+int choice_valid(const char* c);
+void clear_keyboard_buffer(void);
+void withdraw(int *ptr_energy);
 
 int main() {
-    int energyMax = 100;
-    int energy = energyMax;
-    char c = '0'; //initialize c to an irrelevant value.
+    int energy = 100;
+    char choice = '0'; //initialize choice to an irrelevant value.
 
-    while (c != 'q') {
+    while (choice != 'q') {
         printf("Current Energy: %d\n", energy);
-        getUserChoice(&c);
+        get_user_choice(&choice);
+        if (choice == 'w')
+            withdraw(&energy);
+        else if (choice == 'd')
+            0;
+        clrscr();
     }
     return 0;
 }
 
-void getUserChoice(char* c) {
-    char tempChar;
+void get_user_choice(char* c) {
+    char temp;
 
     do {
         printf("What would you like to do:\n"
@@ -25,21 +31,35 @@ void getUserChoice(char* c) {
                "[d]eposit\n"
                "[q]uit\n");
 
-        scanf("%c", &tempChar);
-        clearKeyboardBuffer();
-    } while(!choiceValid(&tempChar));
+        scanf("%c", &temp);
+        clear_keyboard_buffer();
+    } while(!choice_valid(&temp));
 
-    *c = tempChar;
+    *c = temp;
 }
 
-int choiceValid(char *c) {
+int choice_valid(const char *c) {
     return (*c == 'q' || *c == 'w' || *c == 'd') ;
 }
 
-void clearKeyboardBuffer(void) {
+void clear_keyboard_buffer(void) {
     char c;
     do {
         scanf("%c", &c);
     } while (c != '\n');
+}
+
+void withdraw(int *ptr_energy) {
+    int noc, spent_energy;
+    printf("How much energy have you spent? ");
+    noc = scanf("%d", &spent_energy);
+    clear_keyboard_buffer();
+
+    while (noc != 1 || spent_energy < 0) {
+        printf("Please enter a positive integer: ");
+        noc = scanf("%d", &spent_energy);
+    }
+    *ptr_energy -= spent_energy;
+
 }
 

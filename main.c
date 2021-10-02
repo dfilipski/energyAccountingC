@@ -1,10 +1,11 @@
 #include <stdio.h>
-#define clrscr() printf("\e[1;1H\e[2J")
+#define clear_screen() printf("\e[1;1H\e[2J")
 
 void get_user_choice(char* c);
 int choice_valid(const char* c);
 void clear_keyboard_buffer(void);
 void withdraw(int *ptr_energy);
+void deposit(int *ptr_energy);
 
 int main() {
     int energy = 100;
@@ -16,8 +17,8 @@ int main() {
         if (choice == 'w')
             withdraw(&energy);
         else if (choice == 'd')
-            0;
-        clrscr();
+            deposit(&energy);
+        clear_screen();
     }
     return 0;
 }
@@ -60,6 +61,18 @@ void withdraw(int *ptr_energy) {
         noc = scanf("%d", &spent_energy);
     }
     *ptr_energy -= spent_energy;
+}
 
+void deposit(int *ptr_energy) {
+    int noc, gained_energy;
+    printf("How much energy have you regained? ");
+    noc = scanf("%d", &gained_energy);
+    clear_keyboard_buffer();
+
+    while (noc != 1 || gained_energy < 0) {
+        printf("Please enter a positive integer: ");
+        noc = scanf("%d", &gained_energy);
+    }
+    *ptr_energy += gained_energy;
 }
 

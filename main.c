@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdbool.h>
 #define clear_screen() printf("\e[1;1H\e[2J")
 
-void get_user_choice(char* c);
-int choice_valid(const char* c);
+char get_user_choice(void);
+bool choice_valid(char c);
 void clear_keyboard_buffer(void);
-void withdraw(int *ptr_energy);
-void deposit(int *ptr_energy);
+int withdraw(int energy);
+int deposit(int energy);
 
 int main() {
     int energy = 100;
@@ -13,17 +14,17 @@ int main() {
 
     while (choice != 'q') {
         printf("Current Energy: %d\n", energy);
-        get_user_choice(&choice);
+        choice = get_user_choice();
         if (choice == 'w')
-            withdraw(&energy);
+            energy = withdraw(energy);
         else if (choice == 'd')
-            deposit(&energy);
+            energy = deposit(energy);
         clear_screen();
     }
     return 0;
 }
 
-void get_user_choice(char* c) {
+char get_user_choice(void) {
     char temp;
 
     do {
@@ -34,13 +35,13 @@ void get_user_choice(char* c) {
 
         scanf("%c", &temp);
         clear_keyboard_buffer();
-    } while(!choice_valid(&temp));
+    } while(!choice_valid(temp));
 
-    *c = temp;
+    return temp;
 }
 
-int choice_valid(const char *c) {
-    return (*c == 'q' || *c == 'w' || *c == 'd') ;
+bool choice_valid(char c) {
+    return (c == 'q' || c == 'w' || c == 'd') ;
 }
 
 void clear_keyboard_buffer(void) {
@@ -50,7 +51,7 @@ void clear_keyboard_buffer(void) {
     } while (c != '\n');
 }
 
-void withdraw(int *ptr_energy) {
+int withdraw(int energy) {
     int noc, spent_energy;
     printf("How much energy have you spent? ");
     noc = scanf("%d", &spent_energy);
@@ -60,10 +61,10 @@ void withdraw(int *ptr_energy) {
         printf("Please enter a positive integer: ");
         noc = scanf("%d", &spent_energy);
     }
-    *ptr_energy -= spent_energy;
+    return energy - spent_energy;
 }
 
-void deposit(int *ptr_energy) {
+int deposit(int energy) {
     int noc, gained_energy;
     printf("How much energy have you regained? ");
     noc = scanf("%d", &gained_energy);
@@ -73,6 +74,6 @@ void deposit(int *ptr_energy) {
         printf("Please enter a positive integer: ");
         noc = scanf("%d", &gained_energy);
     }
-    *ptr_energy += gained_energy;
+    return energy + gained_energy;
 }
 

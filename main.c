@@ -25,7 +25,7 @@ int withdraw(int energy);
 // gained. energy + the amount the user specified is returned
 int deposit(int energy);
 
-int main()
+int main(void)
 {
 	int energy = 100;
 	char choice = '0'; //initialize choice to an irrelevant value.
@@ -50,10 +50,10 @@ char get_user_choice(void)
 	char temp;
 
 	do {
-		printf("What would you like to do:\n"
-			   "[w]ithdraw\n"
+		printf("[w]ithdraw\n"
 			   "[d]eposit\n"
-			   "[q]uit\n");
+			   "[q]uit\n"
+			   "What would you like to do: ");
 
 		scanf("%c", &temp);
 		clear_keyboard_buffer();

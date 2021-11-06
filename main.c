@@ -69,10 +69,10 @@ bool choice_valid(char c)
 
 void clear_keyboard_buffer(void)
 {
-	char c;
-	do {
-		scanf("%c", &c);
-	} while (c!='\n');
+    char c;
+    do {
+        scanf("%c", &c);
+    } while (c != '\n');
 }
 
 int withdraw(int energy)
@@ -85,6 +85,7 @@ int withdraw(int energy)
 	while (noc!=1 || spent_energy<0) {
 		printf("Please enter a positive integer: ");
 		noc = scanf("%d", &spent_energy);
+	    clear_keyboard_buffer();
 	}
 	return energy-spent_energy;
 }
@@ -99,6 +100,7 @@ int deposit(int energy)
 	while (noc!=1 || gained_energy<0) {
 		printf("Please enter a positive integer: ");
 		noc = scanf("%d", &gained_energy);
+	    clear_keyboard_buffer();
 	}
 	return energy+gained_energy;
 }
